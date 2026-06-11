@@ -4,5 +4,4 @@ python-multipart
 pymupdf
 chromadb
 python-dotenv
-sentence-transformers
 groq
