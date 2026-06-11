@@ -1,11 +1,11 @@
 from groq import Groq
-from backend.config import GROQ_API_KEY
 from backend.retrieval import search_documents
-
-client = Groq(api_key=GROQ_API_KEY)
+import os
 
 
 def answer_question(query: str):
+    api_key = os.environ.get("GROQ_API_KEY")
+    client = Groq(api_key=api_key)
 
     results = search_documents(query)
 
