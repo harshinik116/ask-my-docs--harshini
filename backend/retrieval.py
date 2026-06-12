@@ -33,7 +33,8 @@ def search_documents(query: str, top_k: int = 5):
 
     results = collection.query(
         query_texts=[query],
-        n_results=n
+        n_results=n,
+        include=["documents", "metadatas", "distances"]
     )
 
     return results

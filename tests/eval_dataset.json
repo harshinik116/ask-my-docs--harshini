@@ -1,0 +1,14 @@
+[
+  {
+    "id": "eval_001",
+    "question": "What is the main topic of the uploaded documents?",
+    "expected_keywords": [],
+    "notes": "Generic question — answer must cite at least one source"
+  },
+  {
+    "id": "eval_002",
+    "question": "Summarise the key points from the documents.",
+    "expected_keywords": [],
+    "notes": "Summary question — must include citations"
+  }
+]

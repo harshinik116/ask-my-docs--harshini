@@ -1,0 +1,42 @@
+name: RAG Evaluation Pipeline
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  evaluate:
+    name: Run Eval Pipeline
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt pytest
+
+      - name: Run structural & pipeline tests
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          pytest tests/test_eval.py::test_hybrid_retrieval_returns_results \
+                 tests/test_eval.py::test_reranker_preserves_top_results \
+                 -v --tb=short
+
+      - name: Run LLM-judged eval (quality gate)
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          pytest tests/test_eval.py \
+                 -v --tb=short \
+                 -k "relevance or faithfulness or citation"
+        continue-on-error: false   # Block merge if quality drops

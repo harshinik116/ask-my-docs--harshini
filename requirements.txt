@@ -5,3 +5,5 @@ pymupdf
 chromadb
 python-dotenv
 groq
+rank-bm25
+pytest

@@ -9,6 +9,7 @@ from pydantic import BaseModel
 from backend.config import UPLOAD_FOLDER
 from backend.ingestion import extract_text_from_pdf, chunk_text
 from backend.retrieval import add_chunks_to_vector_db
+from backend.bm25_store import add_to_corpus
 from backend.rag_pipeline import answer_question
 
 app = FastAPI(title="Ask My Docs RAG API")
@@ -39,6 +40,7 @@ async def upload_document(file: UploadFile = File(...)):
     chunks = chunk_text(pages)
 
     add_chunks_to_vector_db(chunks, file.filename)
+    add_to_corpus(chunks, file.filename)
 
     return {
         "message": "Document uploaded and indexed successfully",
